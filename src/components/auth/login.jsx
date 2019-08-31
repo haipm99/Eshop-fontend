@@ -136,7 +136,7 @@ class login extends Component {
                                                     />
                                                     <div className="text-center mt-4 black-text">
                                                         <MDBBtn color="indigo" type="submit" >Login</MDBBtn>
-                                                        <MDBBtn color="indigo">Register</MDBBtn>
+                                                        <MDBBtn color="indigo" href="/register">Register</MDBBtn>
                                                     </div>
                                                 </form>
                                             </MDBCardBody>
