@@ -18,12 +18,12 @@ class register extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username:"",
-            password:"",
-            confirm:"",
-            email:"",
-            fullname:"",
-            roleId:0,
+            username: "",
+            password: "",
+            confirm: "",
+            email: "",
+            fullname: "",
+            roleId: 0,
         }
     }
 
@@ -33,31 +33,32 @@ class register extends Component {
         })
     }
 
-    onchangeSelect = (e) =>{
+    onchangeSelect = (e) => {
         this.setState({
-            roleId : e.target.value
+            roleId: e.target.value
         })
     }
 
     onSubmit = (e) => {
         e.preventDefault();
+
         let data = {
-            "id" : 0,
-            "username" : this.state.username,
-            "password" : this.state.password,
-            "fullname" : this.state.fullname,
-            "email" : this.state.email,
-            "userRoles" : [
+            "id": 0,
+            "username": this.state.username,
+            "password": this.state.password,
+            "fullname": this.state.fullname,
+            "email": this.state.email,
+            "userRoles": [
                 {
-                    "userId" : 0,
-                    "roleId" : this.state.roleId
+                    "userId": 0,
+                    "roleId": this.state.roleId
                 }
             ]
         }
 
-        axios.post("https://localhost:44306/api/AppUser/register",data)
-            .then(res =>{
-                if(res.status === 200){
+        axios.post("https://localhost:44306/api/AppUser/register", data)
+            .then(res => {
+                if (res.status === 200) {
                     window.location = "/";
                 }
             }).catch(err => console.log(err));
@@ -80,7 +81,7 @@ class register extends Component {
                                             </h3>
                                                 <hr className="hr-light" />
                                                 <form className="needs-validation"
-                                                onSubmit = {this.onSubmit}
+                                                    onSubmit={this.onSubmit}
                                                     noValidate>
                                                     <MDBInput
                                                         className="white-text"
@@ -131,7 +132,7 @@ class register extends Component {
                                                         required
                                                     />
 
-                                                    <select className="browser-default custom-select" onChange = {this.onchangeSelect}>
+                                                    <select className="browser-default custom-select" onChange={this.onchangeSelect}>
                                                         <option>Choose your role</option>
                                                         <option value="3">Buyer</option>
                                                         <option value="2">Owner</option>
