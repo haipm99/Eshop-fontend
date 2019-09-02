@@ -11,6 +11,7 @@ import {
     MDBCardBody,
     MDBInput,
     MDBAnimation,
+    MDBAlert
 } from "mdbreact";
 import './login_css.css';
 import axios from 'axios';
@@ -24,7 +25,32 @@ class register extends Component {
             email: "",
             fullname: "",
             roleId: 0,
+            errPassword: "",
+            errUsername: "",
         }
+    }
+
+    checkValidRegister = () => {
+        if (this.state.username.length < 6 || this.state.username.length > 100) {
+            this.setState({
+                errUsername: 'Username must be from 6-100'
+            })
+            return false;
+        }
+        if (this.state.password !== this.state.confirm) {
+            this.setState({
+                errPassword: 'Password must be similar confirm password'
+            })
+            return false;
+        }
+        if (this.state.password.length < 6 || this.state.password.length > 100) {
+            this.setState({
+                errPassword: 'Password must be from 6-100'
+            })
+            return false;
+        }
+
+        return true;
     }
 
     onchange = (e) => {
@@ -41,27 +67,30 @@ class register extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
+        if (this.checkValidRegister()) {
+            let data = {
+                "id": 0,
+                "username": this.state.username,
+                "password": this.state.password,
+                "fullname": this.state.fullname,
+                "email": this.state.email,
+                "userRoles": [
+                    {
+                        "userId": 0,
+                        "roleId": this.state.roleId
+                    }
+                ]
+            }
 
-        let data = {
-            "id": 0,
-            "username": this.state.username,
-            "password": this.state.password,
-            "fullname": this.state.fullname,
-            "email": this.state.email,
-            "userRoles": [
-                {
-                    "userId": 0,
-                    "roleId": this.state.roleId
-                }
-            ]
+            axios.post("https://localhost:44306/api/AppUser/register", data)
+                .then(res => {
+                    if (res.status === 200) {
+                        window.location = "/";
+                    }
+                }).catch(err => {console.log(err) ;  this.setState({
+                    errUsername: 'Username have been exited'
+                })});
         }
-
-        axios.post("https://localhost:44306/api/AppUser/register", data)
-            .then(res => {
-                if (res.status === 200) {
-                    window.location = "/";
-                }
-            }).catch(err => console.log(err));
     }
 
     render() {
@@ -92,6 +121,11 @@ class register extends Component {
                                                         onChange={this.onchange}
                                                         required
                                                     />
+                                                    {
+                                                        this.state.errUsername ? <MDBAlert color="danger" dismiss>
+                                                            {this.state.errUsername}
+                                                        </MDBAlert> : null
+                                                    }
                                                     <MDBInput
                                                         className="white-text"
                                                         iconClass="white-text"
@@ -102,6 +136,11 @@ class register extends Component {
                                                         onChange={this.onchange}
                                                         required
                                                     />
+                                                    {
+                                                        this.state.errPassword ? <MDBAlert color="danger" dismiss>
+                                                            {this.state.errPassword}
+                                                        </MDBAlert> : null
+                                                    }
                                                     <MDBInput
                                                         className="white-text"
                                                         iconClass="white-text"
@@ -112,6 +151,11 @@ class register extends Component {
                                                         onChange={this.onchange}
                                                         required
                                                     />
+                                                    {
+                                                        this.state.errPassword ? <MDBAlert color="danger" dismiss>
+                                                            {this.state.errPassword}
+                                                        </MDBAlert> : null
+                                                    }
                                                     <MDBInput
                                                         className="white-text"
                                                         iconClass="white-text"
