@@ -6,6 +6,7 @@ import { MDBRow, MDBCol, MDBCardImage, MDBCardTitle, MDBCardText } from 'mdbreac
 
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
+import Swal from 'sweetalert2'
 class shopOwner extends Component {
     state = {
         modal14: false,
@@ -25,6 +26,7 @@ class shopOwner extends Component {
     componentDidMount = async () => {
         await this.getUser();
         this.getShop();
+
     }
 
     toggle = nr => () => {
@@ -43,12 +45,7 @@ class shopOwner extends Component {
     }
 
     getShop = async () => {
-        var headers = await {
-            param: {},
-            Authorization: "bearer " + localStorage.getItem("token"),
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json"
-        };
+
         const config = {
             method: 'get',
             url: `https://localhost:44306/api/owner/getShop/${this.state.userId}`,
@@ -58,12 +55,13 @@ class shopOwner extends Component {
                 "Content-Type": "application/json"
             }
         }
-        console.log(headers);
         axios(config)
             .then(res => {
-                this.setState({
-                    shops: res.data
-                })
+                if (res.status === 200) {
+                    this.setState({
+                        shops: res.data
+                    });
+                }
             })
     }
 
@@ -86,7 +84,8 @@ class shopOwner extends Component {
             },
             data: data
         }
-        await axios(config).then(res => {
+        axios(config).then(async (res) => {
+
             if (res.status === 200) {
                 this.getShop();
             }
@@ -94,9 +93,9 @@ class shopOwner extends Component {
     }
 
     render() {
-        const elem = this.state.shops.map((item, index) => {
+        const elem = this.state.shops !== null ? this.state.shops.map((item, index) => {
             return (
-                <MDBCol xl="3" md="6" className="mb-3" style={{marginRight:"50px"}}>
+                <MDBCol xl="3" md="6" className="mb-3" style={{ marginRight: "50px" }}>
                     <MDBCard style={{ width: "22rem" }}>
                         <MDBCardImage className="img-fluid" src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg" waves />
                         <MDBCardBody>
@@ -109,7 +108,7 @@ class shopOwner extends Component {
                     </MDBCard>
                 </MDBCol>
             );
-        });
+        }) : null;
         return (
             <div style={{ left: "19%", width: "80%", position: "absolute" }}>
                 <MDBCard className="mb-5">
