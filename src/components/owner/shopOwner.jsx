@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { MDBCard, MDBCardBody, MDBBreadcrumb, MDBBreadcrumbItem, MDBBtn } from 'mdbreact';
 import { MDBModal, MDBModalBody, MDBModalFooter } from 'mdbreact';
-import { MDBRow, MDBCol, MDBCardImage, MDBCardTitle, MDBCardText } from 'mdbreact';
+import { MDBRow, MDBCol, MDBCardImage, MDBCardTitle} from 'mdbreact';
 //
 
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
-import Swal from 'sweetalert2'
 class shopOwner extends Component {
     state = {
         modal14: false,
@@ -100,10 +99,8 @@ class shopOwner extends Component {
                         <MDBCardImage className="img-fluid" src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg" waves />
                         <MDBCardBody>
                             <MDBCardTitle>{item.name}</MDBCardTitle>
-                            <MDBCardText>
-                                {item.desc}
-                            </MDBCardText>
                             <MDBBtn href="#">{item.status ? "Active" : "Closed"}</MDBBtn>
+                            <MDBBtn color="primary" href = {`owner/manage/${item.id}`}>Manage</MDBBtn>
                         </MDBCardBody>
                     </MDBCard>
                 </MDBCol>
